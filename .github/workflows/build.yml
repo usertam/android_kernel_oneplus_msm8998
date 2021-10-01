@@ -35,9 +35,7 @@ jobs:
         echo '' > .scmversion
 
     - name: Compile the kernel
-      run: |
-        make -j4 CC="ccache clang" O=out usertam_defconfig
-        make -j4 CC="ccache clang" O=out
+      run: make -j$(nproc) CC="ccache clang" O=out usertam_defconfig all
 
     - name: Upload built kernel image
       uses: actions/upload-artifact@v2
