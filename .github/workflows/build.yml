@@ -21,7 +21,7 @@ jobs:
     - name: Prepare prebuilt cross-compile toolchain
       run: |
         mkdir ~/toolchain
-        wget -c https://github.com/usertam/tc-build/releases/latest/download/tc-build-install.tar.xz -O - | tar -C ~/toolchain -xJ
+        curl -L https://github.com/usertam/tc-build/releases/latest/download/tc-build-install.tar.xz | tar -C ~/toolchain -xJ
 
     - name: Prepare build ccache
       uses: hendrikmuhs/ccache-action@v1
@@ -35,9 +35,7 @@ jobs:
         echo '' > .scmversion
 
     - name: Compile the kernel
-      run: |
-        make -j4 CC="ccache clang" O=out usertam_defconfig
-        make -j4 CC="ccache clang" O=out
+      run: make -j$(nproc) CC="ccache clang" O=out usertam_defconfig all
 
     - name: Upload built kernel image
       uses: actions/upload-artifact@v2
